@@ -1,9 +1,10 @@
 package Tests.PageObjects.BasicExercises;
 
 import Tests.PageObjects.BasePage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
@@ -13,38 +14,49 @@ public class CheckBoxDemo extends BasePage {
         super(driver);
     }
 
-    By checkboxInputLocator = By.cssSelector("input#isAgeSelected");
-    By receivedMessageLocator = By.cssSelector("div#txtAge");
-    By allCheckboxLocators = By.cssSelector("input.cb1-element");
-    By checkAllButtonLocator = By.cssSelector("#check1");
+    @FindBy(css = "input#isAgeSelected")
+    @CacheLookup
+    private WebElement checkboxInputElement;
+
+    @FindBy(css = "div#txtAge")
+    @CacheLookup
+    private WebElement receivedMessageElement;
+
+    @FindBy(css = "input.cb1-element")
+    @CacheLookup
+    private List<WebElement> allCheckboxListElement;
+
+    @FindBy(css = "#check1")
+    @CacheLookup
+    private WebElement checkAllButtonElement;
+
 
     public CheckBoxDemo checkSingleCheckbox() {
-        driver.findElement(checkboxInputLocator).click();
+        checkboxInputElement.click();
         return new CheckBoxDemo(driver);
     }
 
     public String getMessage() {
-        return driver.findElement(receivedMessageLocator).getText();
+        return receivedMessageElement.getText();
     }
 
     public CheckBoxDemo checkAllCheckbox() {
-        driver.findElement(checkAllButtonLocator).click();
+        checkAllButtonElement.click();
         return new CheckBoxDemo(driver);
     }
 
     public String getButtonText() {
-        return driver.findElement(checkAllButtonLocator).getAttribute("value");
+        return checkAllButtonElement.getAttribute("value");
     }
 
     public CheckBoxDemo clickOption(int optionNumber) {
-        driver.findElements(allCheckboxLocators).get(optionNumber).click();
+        allCheckboxListElement.get(optionNumber).click();
         return new CheckBoxDemo(driver);
     }
 
     public int getAmountOfCheckedOption() {
         int checkedCheckbox = 0;
-        List<WebElement> checkboxList = driver.findElements(allCheckboxLocators);
-        for (WebElement e : checkboxList) {
+        for (WebElement e : allCheckboxListElement) {
             if (e.isSelected()) {
                 checkedCheckbox++;
             }

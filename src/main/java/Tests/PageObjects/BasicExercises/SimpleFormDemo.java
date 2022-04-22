@@ -1,8 +1,10 @@
 package Tests.PageObjects.BasicExercises;
 
 import Tests.PageObjects.BasePage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.FindBy;
 
 public class SimpleFormDemo extends BasePage {
 
@@ -10,40 +12,60 @@ public class SimpleFormDemo extends BasePage {
         super(driver);
     }
 
-    private By formToSendMessageLocator = By.cssSelector("form#get-input input");
-    private By showMessageButtonLocator = By.cssSelector("form#get-input>button");
-    private By receivedMessageLocator = By.cssSelector("div#user-message");
-    private By formToSendALocator = By.cssSelector("#sum1");
-    private By formToSendBLocator = By.cssSelector("#sum2");
-    private By getTotalButtonLocator = By.cssSelector("#gettotal button");
-    private By receivedSumLocator = By.cssSelector("#gettotal+div:not([class])");
+    @FindBy(css = "form#get-input input")
+    @CacheLookup
+    private WebElement formToSendMessageElement;
+
+    @FindBy(css = "form#get-input>button")
+    @CacheLookup
+    private WebElement showMessageButtonElement;
+
+    @FindBy(css = "div#user-message")
+    @CacheLookup
+    private WebElement receivedMessageElement;
+
+    @FindBy(css = "#sum1")
+    @CacheLookup
+    private WebElement formToSendAElement;
+
+    @FindBy(css = "#sum2")
+    @CacheLookup
+    private WebElement formToSendBElement;
+
+    @FindBy(css = "#gettotal button")
+    @CacheLookup
+    private WebElement getTotalButtonElement;
+
+    @FindBy(css = "#gettotal+div:not([class]")
+    @CacheLookup
+    private WebElement receivedSumElement;
 
     public SimpleFormDemo sendMessage(String message) {
-        driver.findElement(formToSendMessageLocator).sendKeys(message);
+        formToSendMessageElement.sendKeys(message);
         return new SimpleFormDemo(driver);
     }
 
     public SimpleFormDemo clickOnShowMessageButton() {
-        driver.findElement(showMessageButtonLocator).click();
+        showMessageButtonElement.click();
         return new SimpleFormDemo(driver);
     }
 
     public String showReceivedMessage() {
-        return driver.findElement(receivedMessageLocator).getText();
+        return receivedMessageElement.getText();
     }
 
     public SimpleFormDemo sendValues(String a, String b) {
-        driver.findElement(formToSendALocator).sendKeys(a);
-        driver.findElement(formToSendBLocator).sendKeys(b);
+        formToSendAElement.sendKeys(a);
+        formToSendBElement.sendKeys(b);
         return new SimpleFormDemo(driver);
     }
 
     public SimpleFormDemo clickOnGetTotalButton() {
-        driver.findElement(getTotalButtonLocator).click();
+        getTotalButtonElement.click();
         return new SimpleFormDemo(driver);
     }
 
     public String showTotalSum() {
-        return driver.findElement(receivedSumLocator).getText();
+        return receivedSumElement.getText();
     }
 }
