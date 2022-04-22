@@ -40,18 +40,18 @@ public class BasePage {
 
     private String mainSite = "https://demo.seleniumeasy.com/";
 
-    public BasePage goToMainSite() {
+    private BasePage goToMainSite() {
         driver.navigate().to(mainSite);
         return new BasePage(driver);
     }
 
-    public BasePage closeAdd() {
+    private BasePage closeAdd() {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(closePopupElement)).click();
         return new BasePage(driver);
     }
 
-    public BasePage choseCategory(ExercisesDifficulty difficulty) {
+    private BasePage choseCategory(ExercisesDifficulty difficulty) {
         switch (difficulty) {
             case BASIC -> difficultiesElements.get(0).click();
             case INTERMEDIATE -> difficultiesElements.get(1).click();
@@ -60,9 +60,14 @@ public class BasePage {
         return new BasePage(driver);
     }
 
-    public void choseExercises(int exercisesIndex) {
+    private void choseExercises(int exercisesIndex) {
         wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         wait.until(ExpectedConditions.visibilityOf(actualExercisesListElement));
         exercisesListElements.get(exercisesIndex).click();
+    }
+
+    public void goToExercise(ExercisesDifficulty category, int exercisesIndex){
+        goToMainSite().closeAdd().choseCategory(category).choseExercises(exercisesIndex);
+
     }
 }

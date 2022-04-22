@@ -1,5 +1,7 @@
 import Tests.Helpers.ExercisesDifficulty;
 import Tests.PageObjects.BasicExercises.CheckBoxDemo;
+import Tests.PageObjects.BasicExercises.RadioButtonsDemo;
+import Tests.PageObjects.BasicExercises.SelectDropdownList;
 import Tests.PageObjects.BasicExercises.SimpleFormDemo;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -19,9 +21,9 @@ public class BasicExercisesTests extends BaseTest {
         String messageToSend = "Test01#";
         String expectedMessage = "Your Message: " + messageToSend;
         String receivedMessage;
-        //when
         SimpleFormDemo exercisesSite = new SimpleFormDemo(driver);
-        exercisesSite.goToMainSite().closeAdd().choseCategory(ExercisesDifficulty.BASIC).choseExercises(0);
+        //when
+        exercisesSite.goToExercise(ExercisesDifficulty.BASIC, 0);
         receivedMessage = exercisesSite.sendMessage(messageToSend).clickOnShowMessageButton().showReceivedMessage();
         //then
         assertThat(receivedMessage, equalTo(expectedMessage));
@@ -34,9 +36,9 @@ public class BasicExercisesTests extends BaseTest {
         //given
         String expectedMessage = "Total a + b = " + sum;
         String receivedMessage;
-        //when
         SimpleFormDemo exercisesSite = new SimpleFormDemo(driver);
-        exercisesSite.goToMainSite().closeAdd().choseCategory(ExercisesDifficulty.BASIC).choseExercises(0);
+        //when
+        exercisesSite.goToExercise(ExercisesDifficulty.BASIC, 0);
         receivedMessage = exercisesSite.sendValues(a, b).clickOnGetTotalButton().showTotalSum();
         //then
         assertThat(receivedMessage, equalTo(expectedMessage));
@@ -48,9 +50,9 @@ public class BasicExercisesTests extends BaseTest {
         //given
         String expectedMessage = "Success - Check box is checked";
         String receivedMessage;
-        //when
         CheckBoxDemo exercisesSite = new CheckBoxDemo(driver);
-        exercisesSite.goToMainSite().closeAdd().choseCategory(ExercisesDifficulty.BASIC).choseExercises(1);
+        //when
+        exercisesSite.goToExercise(ExercisesDifficulty.BASIC, 1);
         receivedMessage = exercisesSite.checkSingleCheckbox().getMessage();
         //then
         assertThat(receivedMessage, equalTo(expectedMessage));
@@ -63,9 +65,9 @@ public class BasicExercisesTests extends BaseTest {
         String expectedMessage = "Uncheck All";
         String receivedMessage;
         int amountOFCheckedOption;
-        //when
         CheckBoxDemo exercisesSite = new CheckBoxDemo(driver);
-        exercisesSite.goToMainSite().closeAdd().choseCategory(ExercisesDifficulty.BASIC).choseExercises(1);
+        //when
+        exercisesSite.goToExercise(ExercisesDifficulty.BASIC, 1);
         receivedMessage = exercisesSite.checkAllCheckbox().getButtonText();
         amountOFCheckedOption = exercisesSite.getAmountOfCheckedOption();
         //then
@@ -83,9 +85,10 @@ public class BasicExercisesTests extends BaseTest {
         String expectedMessage = "Check All";
         String receivedMessage;
         int amountOFCheckedOption;
-        //when
         CheckBoxDemo exercisesSite = new CheckBoxDemo(driver);
-        exercisesSite.goToMainSite().closeAdd().choseCategory(ExercisesDifficulty.BASIC).choseExercises(1);
+        //when
+        exercisesSite.goToExercise(ExercisesDifficulty.BASIC, 1);
+        ;
         receivedMessage = exercisesSite.checkAllCheckbox().clickOption(3).getButtonText();
         amountOFCheckedOption = exercisesSite.getAmountOfCheckedOption();
         //then
@@ -94,4 +97,77 @@ public class BasicExercisesTests extends BaseTest {
                 () -> assertThat(3, equalTo(amountOFCheckedOption))
         );
     }
+
+    @Tag("iput")
+    @ParameterizedTest
+    @CsvSource({"Male", "Female"})
+    void radioButtonDemo(String gender) {
+        //given
+        String expectedMessage = "Radio button '" + gender + "' is checked";
+        String receivedMessage;
+        RadioButtonsDemo exercisesSite = new RadioButtonsDemo(driver);
+        //when
+        exercisesSite.goToExercise(ExercisesDifficulty.BASIC, 2);
+        receivedMessage = exercisesSite.radioSelectGender(gender).getCheckedValue().getRadioMessage();
+        //when
+        assertThat(receivedMessage, equalTo(expectedMessage));
+    }
+
+    @Tag("input")
+    @ParameterizedTest
+    @CsvSource({"Male, 0 - 5", "Male, 5 - 15", "Male, 15 - 50", "Female, 0 - 5", "Female, 5 - 15", "Female, 15 - 50"})
+    void groupRadioButtonsDemo(String gender, String age) {
+        //given
+        String expectedMessage = "Sex : " + gender + "\nAge group: " + age;
+        String receivedMessage;
+
+        RadioButtonsDemo exerciseSite = new RadioButtonsDemo(driver);
+        //when
+        exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 2);
+        receivedMessage = exerciseSite.groupRadioSelectGender(gender).groupRadioSelectAge(age).getValues().getGroupRadioMessage();
+        //when
+        assertThat(receivedMessage, equalTo(expectedMessage));
+    }
+
+    @Tag("input")
+    @Test
+    void selectListDemo() {
+        //given
+        String selectedDay = "Wednesday";
+        String expectedMessage = "Day selected :- " + selectedDay;
+        String receivedMessage;
+        SelectDropdownList exerciseSite = new SelectDropdownList(driver);
+        //when
+        exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 3);
+        receivedMessage = exerciseSite.singleSelectDay(selectedDay).getSingleMessage();
+        //when
+        assertThat(receivedMessage, equalTo(expectedMessage));
+    }
+
+    @Tag("input")
+    @Test
+    void multiSelectListDemo() {
+        //given
+        String firstSelectedOption = "California";
+        String secondSelectedOption = "Ohio";
+        String firstSelectExpectedMessage = "First selected option is :" + firstSelectedOption;
+        String allSelectExpectedMessage = "Options selected are : " + firstSelectedOption + "," + secondSelectedOption;
+
+        SelectDropdownList exerciseSite = new SelectDropdownList(driver);
+        //when
+        exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 3);
+        exerciseSite.selectTwoOptions(firstSelectedOption, secondSelectedOption);
+        //then
+        assertAll(
+                () -> {
+                    String firstSelectReceivedMessage = exerciseSite.getFirstSelectedMessage();
+                    assertThat(firstSelectReceivedMessage, equalTo(firstSelectExpectedMessage));
+                },
+                () -> {
+                    String allSelectReceivedMessage = exerciseSite.getAllSelectedMessage();
+                    assertThat(allSelectReceivedMessage, equalTo(allSelectExpectedMessage));
+                }
+        );
+    }
+
 }
