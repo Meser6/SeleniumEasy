@@ -1,8 +1,5 @@
 import Tests.Helpers.ExercisesDifficulty;
-import Tests.PageObjects.BasicExercises.CheckBoxDemo;
-import Tests.PageObjects.BasicExercises.RadioButtonsDemo;
-import Tests.PageObjects.BasicExercises.SelectDropdownList;
-import Tests.PageObjects.BasicExercises.SimpleFormDemo;
+import Tests.PageObjects.BasicExercises.*;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -169,5 +166,52 @@ public class BasicExercisesTests extends BaseTest {
                 }
         );
     }
+
+    @Tag("alerts")
+    @Test
+    void javaScriptAlertBox() {
+        //given
+        String expectedMessage = "I am an alert box!";
+        String receivedMessage;
+
+        JavascriptAlerts exerciseSite = new JavascriptAlerts(driver);
+        //when
+        exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 4);
+        receivedMessage = exerciseSite.initAlertBox().getAlertText();
+        //when
+        assertThat(receivedMessage, equalTo(expectedMessage));
+    }
+
+    @Tag("alerts")
+    @ParameterizedTest
+    @CsvSource({"OK", "Cancel"})
+    void javaScriptConfirmBox(String alert) {
+        //given
+        String expectedMessage = "You pressed " + alert + "!";
+        String receivedMessage;
+        JavascriptAlerts exerciseSite = new JavascriptAlerts(driver);
+        //when
+        exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 4);
+        receivedMessage = exerciseSite.initConfirmBox().acceptOrDismiss(alert).getConfirmReceivedMessage();
+        //then
+        assertThat(receivedMessage, equalTo(expectedMessage));
+    }
+
+    @Tag("alerts")
+    @Test
+    void javaScriptAlertBox2() {
+        //given
+        String messageToSend = "Test01#";
+        String expectedMessage = "You have entered '" + messageToSend + "' !";
+        String receivedMessage;
+
+        JavascriptAlerts exerciseSite = new JavascriptAlerts(driver);
+        //when
+        exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 4);
+        receivedMessage = exerciseSite.initPromptBox().sendKeysToAlert(messageToSend).acceptOrDismiss("OK").getPromptReceivedMessage();
+        //then
+        assertThat(receivedMessage, equalTo(expectedMessage));
+    }
+
 
 }
