@@ -12,6 +12,9 @@ import org.openqa.selenium.io.FileHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +26,7 @@ public abstract class BaseTest {
     @RegisterExtension
     ScreenshotHelper status = new ScreenshotHelper();
 
+
     @BeforeEach
     void testsSetUp() {
         WebDriverManager.chromedriver().setup();
@@ -33,18 +37,21 @@ public abstract class BaseTest {
     }
 
     @AfterEach
-    void closeProcess(TestInfo info) throws IOException {
+    void closeProcess(TestInfo info) throws IOException, URISyntaxException {
         if (status.isFiled) {
             System.out.println("Test screenshot is available at: " + takeScreenshot(info));
         }
         driver.quit();
     }
 
-    private String takeScreenshot(TestInfo info) throws IOException {
+    private String takeScreenshot(TestInfo info) throws IOException, URISyntaxException {
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         LocalDateTime timeNow = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy HH-mm-ss");
-        String path = "C:\\Users\\48513\\Desktop\\Screenshot\\" + info.getDisplayName() + " " + formatter.format(timeNow) + ".jpg";
+        URL res = getClass().getClassLoader().getResource("AlertsParameters.csv");
+        assert res != null;
+        File file = Paths.get(res.toURI()).toFile();
+        String path = file.getAbsolutePath().replace("target\\classes\\AlertsParameters.csv", "src\\main\\resources\\ScreenshotsFromFailedTests\\") + info.getDisplayName() + " " + formatter.format(timeNow) + ".jpg";//C:\\Users\\48513\\Desktop\\Screenshot\\" + info.getDisplayName() + " " + formatter.format(timeNow) + ".jpg";
         FileHandler.copy(screenshot, new File(path));
         return path;
     }
