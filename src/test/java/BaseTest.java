@@ -24,6 +24,7 @@ public abstract class BaseTest {
     @RegisterExtension
     ScreenshotHelper status = new ScreenshotHelper();
 
+
     @BeforeEach
     void testsSetUp() {
         WebDriverManager.chromedriver().setup();
