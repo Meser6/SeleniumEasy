@@ -38,7 +38,7 @@ public class BasePage {
     @CacheLookup
     private List<WebElement> exercisesListElements;
 
-    private String mainSite = "https://demo.seleniumeasy.com/";
+    private final String mainSite = "https://demo.seleniumeasy.com/";
 
     private BasePage goToMainSite() {
         driver.navigate().to(mainSite);
@@ -68,6 +68,10 @@ public class BasePage {
 
     public void goToExercise(ExercisesDifficulty category, int exercisesIndex){
         goToMainSite().closeAdd().choseCategory(category).choseExercises(exercisesIndex);
+    }
+
+
+    public static void main(String[] args) {
 
     }
 }

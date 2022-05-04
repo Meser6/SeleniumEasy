@@ -26,14 +26,18 @@ public class WindowPopupModal extends BasePage {
     public WindowPopupModal clickSingleWindowPopupButton(String button) {
         if (button.equals("twitter")) {
             buttonsToSingleSocialMediaElements.get(0).click();
-        } else buttonsToSingleSocialMediaElements.get(1).click();
+        } else {
+            buttonsToSingleSocialMediaElements.get(1).click();
+        }
         return new WindowPopupModal(driver);
     }
 
     public WindowPopupModal clickMultiWindowPopupButton(int pageAmount) {
         if (pageAmount == 3) {
             buttonsToMultiSocialMediaElements.get(0).click();
-        } else buttonsToMultiSocialMediaElements.get(1).click();
+        } else {
+            buttonsToMultiSocialMediaElements.get(1).click();
+        }
         return new WindowPopupModal(driver);
     }
 

@@ -55,8 +55,11 @@ public class JavascriptAlerts extends BasePage {
     }
 
     public JavascriptAlerts acceptOrDismiss(String alert) {
-        if (alert.equals("OK")) switchToAlert().accept();
-        else switchToAlert().dismiss();
+        if (alert.equals("OK")) {
+            switchToAlert().accept();
+        } else {
+            switchToAlert().dismiss();
+        }
         return new JavascriptAlerts(driver);
     }
 

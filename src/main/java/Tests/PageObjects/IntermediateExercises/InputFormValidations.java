@@ -102,6 +102,8 @@ public class InputFormValidations extends BasePage {
     private WebElement errorMessageElement() {
         if (basicErrorMessageElement.size() > 0) {
             return basicErrorMessageElement.get(0);
-        } else return alternativeErrorMessageElement.get(0);
+        } else {
+            return alternativeErrorMessageElement.get(0);
+        }
     }
 }

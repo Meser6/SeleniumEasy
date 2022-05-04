@@ -1,5 +1,5 @@
 # SeleniumEasy
-This is a project with my resolution of some proposed exercises from https://demo.seleniumeasy.com/
+This is a project with my solution of some proposed exercises from https://demo.seleniumeasy.com/
 
 ## **Tools**
 Project is created with:
@@ -8,7 +8,7 @@ Project is created with:
 * Selenium WebDriver 4
 * JUnit 5
 * Hamcrest 2
-* WebDriverMenager 5
+* WebDriverManager 5
 
 ## **Author**
 
