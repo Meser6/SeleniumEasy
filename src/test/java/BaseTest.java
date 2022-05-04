@@ -13,8 +13,6 @@ import org.openqa.selenium.io.FileHandler;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,10 +24,10 @@ public abstract class BaseTest {
     @RegisterExtension
     ScreenshotHelper status = new ScreenshotHelper();
 
-
     @BeforeEach
     void testsSetUp() {
         WebDriverManager.chromedriver().setup();
+
         driver = new ChromeDriver();
 
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
@@ -38,7 +36,7 @@ public abstract class BaseTest {
 
     @AfterEach
     void closeProcess(TestInfo info) throws IOException, URISyntaxException {
-        if (status.isFiled) {
+        if (status.isFailed) {
             System.out.println("Test screenshot is available at: " + takeScreenshot(info));
         }
         driver.quit();
@@ -48,10 +46,8 @@ public abstract class BaseTest {
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         LocalDateTime timeNow = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy HH-mm-ss");
-        URL res = getClass().getClassLoader().getResource("AlertsParameters.csv");
-        assert res != null;
-        File file = Paths.get(res.toURI()).toFile();
-        String path = file.getAbsolutePath().replace("target\\classes\\AlertsParameters.csv", "src\\main\\resources\\ScreenshotsFromFailedTests\\") + info.getDisplayName() + " " + formatter.format(timeNow) + ".jpg";//C:\\Users\\48513\\Desktop\\Screenshot\\" + info.getDisplayName() + " " + formatter.format(timeNow) + ".jpg";
+        String path = System.getProperty("user.dir") + "\\src\\main\\resources\\ScreenshotsFromFailedTests\\"
+                + info.getDisplayName() + " " + formatter.format(timeNow) + ".jpg";
         FileHandler.copy(screenshot, new File(path));
         return path;
     }

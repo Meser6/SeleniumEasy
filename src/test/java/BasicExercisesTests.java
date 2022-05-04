@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,13 +20,15 @@ public class BasicExercisesTests extends BaseTest {
     void singleInputField() {
         //given
         String messageToSend = "Test01#";
-        String expectedMessage = "Your Message: " + messageToSend;
-        SimpleFormDemo exercisesSite = new SimpleFormDemo(driver);
+        SimpleFormDemo exerciseSite = new SimpleFormDemo(driver);
         //when
-        exercisesSite.goToExercise(ExercisesDifficulty.BASIC, 0);
-        String receivedMessage = exercisesSite.sendMessage(messageToSend).clickOnShowMessageButton().showReceivedMessage();
+        exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 0);
+        String receivedMessage = exerciseSite
+                .sendMessage(messageToSend)
+                .clickOnShowMessageButton()
+                .showReceivedMessage();
         //then
-        assertThat(receivedMessage, equalTo(expectedMessage));
+        assertThat(receivedMessage, containsString(messageToSend));
     }
 
     @Tag("input")
@@ -33,26 +36,30 @@ public class BasicExercisesTests extends BaseTest {
     @CsvSource({"5, 10, 15", "x, 10, NaN", "x, y, NaN"})
     void twoInputFields(String a, String b, String sum) {
         //given
-        String expectedMessage = "Total a + b = " + sum;
-        SimpleFormDemo exercisesSite = new SimpleFormDemo(driver);
+        SimpleFormDemo exerciseSite = new SimpleFormDemo(driver);
         //when
-        exercisesSite.goToExercise(ExercisesDifficulty.BASIC, 0);
-        String receivedMessage = exercisesSite.sendValues(a, b).clickOnGetTotalButton().showTotalSum();
+        exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 0);
+        String receivedMessage = exerciseSite
+                .sendValues(a, b)
+                .clickOnGetTotalButton()
+                .showTotalSum();
         //then
-        assertThat(receivedMessage, equalTo(expectedMessage));
+        assertThat(receivedMessage, containsString(sum));
     }
 
     @Tag("input")
     @Test
     void singleCheckboxDemo() {
         //given
-        String expectedMessage = "Success - Check box is checked";
-        CheckBoxDemo exercisesSite = new CheckBoxDemo(driver);
+        String expectedMessage = "Check box is checked";
+        CheckBoxDemo exerciseSite = new CheckBoxDemo(driver);
         //when
-        exercisesSite.goToExercise(ExercisesDifficulty.BASIC, 1);
-        String receivedMessage = exercisesSite.checkSingleCheckbox().getMessage();
+        exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 1);
+        String receivedMessage = exerciseSite
+                .checkSingleCheckbox()
+                .getMessage();
         //then
-        assertThat(receivedMessage, equalTo(expectedMessage));
+        assertThat(receivedMessage, containsString(expectedMessage));
     }
 
     @Tag("input")
@@ -60,11 +67,14 @@ public class BasicExercisesTests extends BaseTest {
     void multipleCheckboxDemo() {
         //given
         String expectedMessage = "Uncheck All";
-        CheckBoxDemo exercisesSite = new CheckBoxDemo(driver);
+        CheckBoxDemo exerciseSite = new CheckBoxDemo(driver);
         //when
-        exercisesSite.goToExercise(ExercisesDifficulty.BASIC, 1);
-        String receivedMessage = exercisesSite.checkAllCheckbox().getButtonText();
-        int amountOFCheckedOption = exercisesSite.getAmountOfCheckedOption();
+        exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 1);
+        String receivedMessage = exerciseSite
+                .checkAllCheckbox()
+                .getButtonText();
+        int amountOFCheckedOption = exerciseSite
+                .getAmountOfCheckedOption();
         //then
         assertAll(
                 () -> assertThat(receivedMessage, equalTo(expectedMessage)),
@@ -77,11 +87,15 @@ public class BasicExercisesTests extends BaseTest {
     void multipleCheckboxDemo2() {
         //given
         String expectedMessage = "Check All";
-        CheckBoxDemo exercisesSite = new CheckBoxDemo(driver);
+        CheckBoxDemo exerciseSite = new CheckBoxDemo(driver);
         //when
-        exercisesSite.goToExercise(ExercisesDifficulty.BASIC, 1);
-        String receivedMessage = exercisesSite.checkAllCheckbox().clickOption(3).getButtonText();
-        int amountOFCheckedOption = exercisesSite.getAmountOfCheckedOption();
+        exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 1);
+        String receivedMessage = exerciseSite
+                .checkAllCheckbox()
+                .clickOption(3)
+                .getButtonText();
+        int amountOFCheckedOption = exerciseSite
+                .getAmountOfCheckedOption();
         //then
         assertAll(
                 () -> assertThat(receivedMessage, equalTo(expectedMessage)),
@@ -94,13 +108,16 @@ public class BasicExercisesTests extends BaseTest {
     @CsvSource({"Male", "Female"})
     void radioButtonDemo(String gender) {
         //given
-        String expectedMessage = "Radio button '" + gender + "' is checked";
-        RadioButtonsDemo exercisesSite = new RadioButtonsDemo(driver);
+        String expectedMessage = gender + "' is checked";
+        RadioButtonsDemo exerciseSite = new RadioButtonsDemo(driver);
         //when
-        exercisesSite.goToExercise(ExercisesDifficulty.BASIC, 2);
-        String receivedMessage = exercisesSite.radioSelectGender(gender).getCheckedValue().getRadioMessage();
+        exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 2);
+        String receivedMessage = exerciseSite
+                .radioSelectGender(gender)
+                .getCheckedValue()
+                .getRadioMessage();
         //when
-        assertThat(receivedMessage, equalTo(expectedMessage));
+        assertThat(receivedMessage, containsString(expectedMessage));
     }
 
     @Tag("input")
@@ -112,7 +129,11 @@ public class BasicExercisesTests extends BaseTest {
         RadioButtonsDemo exerciseSite = new RadioButtonsDemo(driver);
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 2);
-        String receivedMessage = exerciseSite.groupRadioSelectGender(gender).groupRadioSelectAge(age).getValues().getGroupRadioMessage();
+        String receivedMessage = exerciseSite
+                .groupRadioSelectGender(gender)
+                .groupRadioSelectAge(age)
+                .getValues()
+                .getGroupRadioMessage();
         //when
         assertThat(receivedMessage, equalTo(expectedMessage));
     }
@@ -122,13 +143,14 @@ public class BasicExercisesTests extends BaseTest {
     void selectListDemo() {
         //given
         String selectedDay = "Wednesday";
-        String expectedMessage = "Day selected :- " + selectedDay;
         SelectDropdownList exerciseSite = new SelectDropdownList(driver);
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 3);
-        String receivedMessage = exerciseSite.singleSelectDay(selectedDay).getSingleMessage();
+        String receivedMessage = exerciseSite
+                .singleSelectDay(selectedDay)
+                .getSingleMessage();
         //when
-        assertThat(receivedMessage, equalTo(expectedMessage));
+        assertThat(receivedMessage, containsString(selectedDay));
     }
 
     @Tag("input")
@@ -142,7 +164,8 @@ public class BasicExercisesTests extends BaseTest {
         SelectDropdownList exerciseSite = new SelectDropdownList(driver);
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 3);
-        exerciseSite.selectTwoOptions(firstSelectedOption, secondSelectedOption);
+        exerciseSite
+                .selectTwoOptions(firstSelectedOption, secondSelectedOption);
         //then
         assertAll(
                 () -> assertThat(exerciseSite.getFirstSelectedMessage(), equalTo(firstSelectExpectedMessage)),
@@ -158,7 +181,9 @@ public class BasicExercisesTests extends BaseTest {
         JavascriptAlerts exerciseSite = new JavascriptAlerts(driver);
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 4);
-        String receivedMessage = exerciseSite.initAlertBox().getAlertText();
+        String receivedMessage = exerciseSite
+                .initAlertBox()
+                .getAlertText();
         //when
         assertThat(receivedMessage, equalTo(expectedMessage));
     }
@@ -168,13 +193,16 @@ public class BasicExercisesTests extends BaseTest {
     @CsvSource({"OK", "Cancel"})
     void javaScriptConfirmBox(String alert) {
         //given
-        String expectedMessage = "You pressed " + alert + "!";
+        String expectedMessage = "You pressed " + alert;
         JavascriptAlerts exerciseSite = new JavascriptAlerts(driver);
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 4);
-        String receivedMessage = exerciseSite.initConfirmBox().acceptOrDismiss(alert).getConfirmReceivedMessage();
+        String receivedMessage = exerciseSite
+                .initConfirmBox()
+                .acceptOrDismiss(alert)
+                .getConfirmReceivedMessage();
         //then
-        assertThat(receivedMessage, equalTo(expectedMessage));
+        assertThat(receivedMessage, containsString(expectedMessage));
     }
 
     @Tag("alerts")
@@ -182,24 +210,30 @@ public class BasicExercisesTests extends BaseTest {
     void javaScriptAlertBox2() {
         //given
         String messageToSend = "Test01#";
-        String expectedMessage = "You have entered '" + messageToSend + "' !";
         JavascriptAlerts exerciseSite = new JavascriptAlerts(driver);
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 4);
-        String receivedMessage = exerciseSite.initPromptBox().sendKeysToAlert(messageToSend).acceptOrDismiss("OK").getPromptReceivedMessage();
+        String receivedMessage = exerciseSite
+                .initPromptBox()
+                .sendKeysToAlert(messageToSend)
+                .acceptOrDismiss("OK")
+                .getPromptReceivedMessage();
         //then
-        assertThat(receivedMessage, equalTo(expectedMessage));
+        assertThat(receivedMessage, containsString(messageToSend));
     }
 
     @Tag("alerts")
     @ParameterizedTest
-    @CsvSource({"twitter, https://twitter.com/intent/follow?screen_name=seleniumeasy", " facebook, https://www.facebook.com/seleniumeasy"})
+    @CsvSource({"twitter, https://twitter.com/intent/follow?screen_name=seleniumeasy",
+            "facebook, https://www.facebook.com/seleniumeasy"})
     void singleWindowPopup(String button, String expectedUrl) {
         //given
         WindowPopupModal exerciseSite = new WindowPopupModal(driver);
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 5);
-        String receivedUrl = exerciseSite.clickSingleWindowPopupButton(button).getSecondCardURL();
+        String receivedUrl = exerciseSite
+                .clickSingleWindowPopupButton(button)
+                .getSecondCardURL();
         //then
         assertThat(receivedUrl, equalTo(expectedUrl));
     }
@@ -212,7 +246,9 @@ public class BasicExercisesTests extends BaseTest {
         WindowPopupModal exerciseSite = new WindowPopupModal(driver);
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 5);
-        int receivedPageAmount = exerciseSite.clickMultiWindowPopupButton(expectedPageAmount).getPageAmount();
+        int receivedPageAmount = exerciseSite
+                .clickMultiWindowPopupButton(expectedPageAmount)
+                .getPageAmount();
         //then
         assertThat(receivedPageAmount, equalTo(expectedPageAmount));
     }
@@ -220,16 +256,18 @@ public class BasicExercisesTests extends BaseTest {
     @Tag("alerts")
     @ParameterizedTest
     @CsvFileSource(resources = "/AlertsParameters.csv")
-    void bootstrapAlertMessages(String alertCategory, String expectedFontColor, String expectedBackgroundColor, String expectedBorderColor) {
+    void bootstrapAlertMessages(String alertCategory, String expectedFontColor, String expectedBackgroundColor,
+                                String expectedBorderColor) {
         //given
-        String expectedAlertMessage = "×\nI'm a normal " + alertCategory + " message. To close use the appropriate button.";
+        String expectedAlertMessage = "normal " + alertCategory + " message.";
         BootstrapAlerts exerciseSite = new BootstrapAlerts(driver);
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 6);
-        exerciseSite.clickAndGetBoxParameters(false, alertCategory);
+        exerciseSite
+                .clickAndGetBoxParameters(false, alertCategory);
         //then
         assertAll(
-                () -> assertThat(exerciseSite.boxAlertMessage, equalTo(expectedAlertMessage)),
+                () -> assertThat(exerciseSite.boxAlertMessage, containsString(expectedAlertMessage)),
                 () -> assertThat(exerciseSite.boxFontColor, equalTo(expectedFontColor)),
                 () -> assertThat(exerciseSite.boxBackgroundColor, equalTo(expectedBackgroundColor)),
                 () -> assertThat(exerciseSite.boxBorderColor, equalTo(expectedBorderColor)),
@@ -240,17 +278,21 @@ public class BasicExercisesTests extends BaseTest {
     @Tag("alerts")
     @ParameterizedTest
     @CsvFileSource(resources = "/AlertsParameters.csv")
-    void bootstrapAlertMessages2(String alertCategory, String expectedFontColor, String expectedBackgroundColor, String expectedBorderColor, int displayedTime) {
+    void bootstrapAlertMessages2(String alertCategory, String expectedFontColor, String expectedBackgroundColor,
+                                 String expectedBorderColor, int displayedTime) {
         //given
-        String expectedAlertMessage = "I'm an autocloseable " + alertCategory + " message. I will hide in " + displayedTime + " seconds.";
+        String expectedAlertTypeMessage = "autocloseable " + alertCategory + " message.";
+        String expectedAlertTimeMessage = "hide in " + displayedTime + " seconds.";
         BootstrapAlerts exerciseSite = new BootstrapAlerts(driver);
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 6);
-        exerciseSite.clickAndGetBoxParameters(true, alertCategory);
+        exerciseSite
+                .clickAndGetBoxParameters(true, alertCategory);
         //then
         assertAll(
                 () -> assertFalse(exerciseSite.buttonIsEnabled(true, alertCategory)),
-                () -> assertThat(exerciseSite.boxAlertMessage, equalTo(expectedAlertMessage)),
+                () -> assertThat(exerciseSite.boxAlertMessage, containsString(expectedAlertTypeMessage)),
+                () -> assertThat(exerciseSite.boxAlertMessage, containsString(expectedAlertTimeMessage)),
                 () -> assertThat(exerciseSite.boxFontColor, equalTo(expectedFontColor)),
                 () -> assertThat(exerciseSite.boxBackgroundColor, equalTo(expectedBackgroundColor)),
                 () -> assertThat(exerciseSite.boxBorderColor, equalTo(expectedBorderColor)),
@@ -267,7 +309,8 @@ public class BasicExercisesTests extends BaseTest {
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 7);
         //then
-        Assertions.assertDoesNotThrow(() -> exerciseSite.lunchSingleModal().saveChanges(0).checkRefreshing());
+        Assertions.assertDoesNotThrow(
+                () -> exerciseSite.lunchSingleModal().saveChanges(0).checkRefreshing());
     }
 
     @Tag("alerts")
@@ -278,7 +321,8 @@ public class BasicExercisesTests extends BaseTest {
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 7);
         //then
-        Assertions.assertDoesNotThrow(() -> exerciseSite.lunchMultiModal().saveChanges(1).checkRefreshing());
+        Assertions.assertDoesNotThrow(
+                () -> exerciseSite.lunchMultiModal().saveChanges(1).checkRefreshing());
     }
 
     @Tag("alerts")
@@ -289,6 +333,7 @@ public class BasicExercisesTests extends BaseTest {
         //when
         exerciseSite.goToExercise(ExercisesDifficulty.BASIC, 7);
         //then
-        Assertions.assertDoesNotThrow(() -> exerciseSite.lunchMultiModal().lunchSecondModal().saveChanges(2).checkRefreshing());
+        Assertions.assertDoesNotThrow(
+                () -> exerciseSite.lunchMultiModal().lunchSecondModal().saveChanges(2).checkRefreshing());
     }
 }

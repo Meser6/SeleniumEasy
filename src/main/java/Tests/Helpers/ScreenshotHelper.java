@@ -5,10 +5,10 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 public class ScreenshotHelper implements AfterTestExecutionCallback {
 
-    public boolean isFiled;
+    public boolean isFailed;
 
     @Override
-    public void afterTestExecution(ExtensionContext extensionContext) throws Exception {
-        isFiled = extensionContext.getExecutionException().isPresent();
+    public void afterTestExecution(ExtensionContext extensionContext) {
+        isFailed = extensionContext.getExecutionException().isPresent();
     }
 }
