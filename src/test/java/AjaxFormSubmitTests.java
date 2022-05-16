@@ -1,5 +1,6 @@
 import Tests.Helpers.ExercisesDifficulty;
 import Tests.PageObjects.IntermediateExercises.AjaxFormSubmit;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,6 +14,7 @@ public class AjaxFormSubmitTests extends BaseTest {
     private final String description = "description";
     private final String successMessage = "Form submited Successfully!";
 
+    @Tag("input")
     @Test
     void itIsPossibleToSendFormWithNameOnly() {
         //given
@@ -27,6 +29,7 @@ public class AjaxFormSubmitTests extends BaseTest {
         assertThat(receivedMessage, equalTo(successMessage));
     }
 
+    @Tag("input")
     @Test
     void itIsPossibleToSendFormWithBothText() {
         //given
@@ -42,6 +45,7 @@ public class AjaxFormSubmitTests extends BaseTest {
         assertThat(receivedMessage, equalTo(successMessage));
     }
 
+    @Tag("input")
     @Test
     void itIsImpossibleToSendFormWithDescriptionOnly() {
         //given
