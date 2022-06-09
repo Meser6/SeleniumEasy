@@ -69,9 +69,4 @@ public class BasePage {
     public void goToExercise(ExercisesDifficulty category, int exercisesIndex){
         goToMainSite().closeAdd().choseCategory(category).choseExercises(exercisesIndex);
     }
-
-
-    public static void main(String[] args) {
-
-    }
 }
